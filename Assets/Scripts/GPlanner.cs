@@ -18,12 +18,24 @@ public class Node
         this.state = new Dictionary<string, int>(allstates);
         this.action = action;
     }
+
+    public Node(Node parent, float cost, Dictionary<string, int> allstates, Dictionary<string, int> beliefstates, GAction action)
+    {
+        this.parent = parent;
+        this.cost = cost;
+        this.state = new Dictionary<string, int>(allstates);
+        foreach (KeyValuePair<string, int> b in beliefstates)
+            if (!this.state.ContainsKey(b.Key))
+                this.state.Add(b.Key, b.Value);
+
+        this.action = action;
+    }
 }
 
 
 public class GPlanner
 {
-    public Queue<GAction> plan(List<GAction> actions, Dictionary<string, int> goal, WorldStates states)
+    public Queue<GAction> plan(List<GAction> actions, Dictionary<string, int> goal, WorldStates beliefstates)
     {
         List<GAction> usableActions = new List<GAction>();
         foreach (GAction a in actions) 
@@ -32,9 +44,11 @@ public class GPlanner
                 usableActions.Add(a);
         }
 
+        // Setup first leaf for graph
         List<Node> leaves = new List<Node>();
-        Node start = new Node(null, 0, GWorld.Instance.GetWorld().GetStates(), null);
+        Node start = new Node(null, 0, GWorld.Instance.GetWorld().GetStates(), beliefstates.GetStates(), null);
 
+        // Build Graph
         bool success = BuildGraph(start, leaves, usableActions, goal);
 
         if(!success)
@@ -43,6 +57,7 @@ public class GPlanner
             return null;
         }
 
+        // We have a plan, so follow it
         Node cheapest = null;
         foreach (Node leaf in leaves)
         {
@@ -55,7 +70,7 @@ public class GPlanner
             }
         }
 
-        List<GAction> result = new List<GAction>(usableActions);
+        List<GAction> result = new List<GAction>();
         Node n = cheapest;
         while (n != null)
         {

@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Patient : GAgent
+public class Nurse : GAgent
 {
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();   // gets Start from GAgent script
-        SubGoal s1 = new SubGoal("isWaiting", 1, true);
+        SubGoal s1 = new SubGoal("treatPatient", 1, true);
         goals.Add(s1, 3);
-
-        SubGoal s2 = new SubGoal("isTreated", 1, true);
-        goals.Add(s2, 5);
     }
 }
