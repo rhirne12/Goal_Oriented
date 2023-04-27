@@ -46,7 +46,7 @@ public class GPlanner
 
         // Setup first leaf for graph
         List<Node> leaves = new List<Node>();
-        Node start = new Node(null, 0, GWorld.Instance.GetWorld().GetStates(), beliefstates.GetStates(), null);
+        Node start = new Node(null, 0.0f, GWorld.Instance.GetWorld().GetStates(), beliefstates.GetStates(), null);
 
         // Build Graph
         bool success = BuildGraph(start, leaves, usableActions, goal);

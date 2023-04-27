@@ -23,6 +23,7 @@ public class GAgent : MonoBehaviour
     public Dictionary<SubGoal, int> goals = new Dictionary<SubGoal, int>();
     public GInventory inventory = new GInventory();
     public WorldStates beliefs = new WorldStates();
+    
 
     GPlanner planner;
     Queue<GAction> actionQueue;
@@ -40,6 +41,7 @@ public class GAgent : MonoBehaviour
     }
 
     bool invoked = false;
+
     void CompleteAction()
     {
         // reset the planning system so it can perform another action
@@ -55,7 +57,7 @@ public class GAgent : MonoBehaviour
         {
             // check that the agents has a goal and has reaced that goal
             float distanceToTarget = Vector3.Distance(currentAction.target.transform.position, this.transform.position);
-            if (currentAction.agent.hasPath && distanceToTarget < 2f) // currentAction.agent.remainingDistance < 1.0f)
+            if (currentAction.agent.hasPath && distanceToTarget < 2.0f) // currentAction.agent.remainingDistance < 1.0f)
             {
                 if (!invoked)
                 {
@@ -109,7 +111,7 @@ public class GAgent : MonoBehaviour
             }
             else
             {
-                // actionQueue = null;    // force a new plan retrieval
+               actionQueue = null;    // force a new plan retrieval
             }
         }
     }
